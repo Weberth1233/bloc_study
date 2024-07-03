@@ -32,8 +32,43 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       _onPostFetched,
       transformer: throttleDroppable(throttleDuration),
     );
+    on<PostFilterFetched>(
+      _onPostFilterFetched,
+      transformer: throttleDroppable(throttleDuration),
+    );
   }
 
+  Future<void> _onPostFilterFetched(
+      PostFilterFetched event, Emitter<PostState> emit) async {
+    try {
+      //se deu sucesso é sinal que a lista foi carregada
+      if (state.status == PostStatus.sucess) {
+        //Se a pessoa estiver escrevendo mais de 3 letras eu pego a listagem e atualizo ela
+        if (event.writing) {
+          return emit(
+            state.copyWith(
+              hasReachedMax: true,
+              posts: event.posts
+                  .where((element) => element.title.contains(event.text))
+                  .toList(),
+            ),
+          );
+        } else {
+          final posts = await _fetchPosts();
+
+          return emit(state.copyWith(
+            posts: posts,
+          ));
+        }
+      }
+    } catch (_) {
+      emit(
+        state.copyWith(status: PostStatus.failure),
+      );
+    }
+  }
+
+  //Verifica qual é o estado e emit o event que popula a listagem
   Future<void> _onPostFetched(
       PostFetched event, Emitter<PostState> emit) async {
     if (state.hasReachedMax!) return;

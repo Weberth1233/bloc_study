@@ -1,0 +1,1 @@
+//criar um bloc generico onde o poststate extende dele - nesse bloc generico teremos o estado de checkar a conexão

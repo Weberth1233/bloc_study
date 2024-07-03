@@ -13,7 +13,13 @@ class PostListItem extends StatelessWidget {
     return Material(
       child: ListTile(
         leading: Text('${post.id}', style: textTheme.bodySmall),
-        title: Text(post.title),
+        title: Text(
+          post.title,
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         isThreeLine: true,
         subtitle: Text(post.body),
         dense: true,

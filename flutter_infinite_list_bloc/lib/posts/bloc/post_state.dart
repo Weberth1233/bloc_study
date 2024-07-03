@@ -42,3 +42,9 @@ final class PostState extends Equatable {
   // TODO: implement props
   List<Object?> get props => [status, posts, hasReachedMax];
 }
+
+final class CheckConnectionState extends Equatable {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
